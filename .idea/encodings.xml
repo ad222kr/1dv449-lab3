@@ -6,6 +6,7 @@
     <file url="file://$PROJECT_DIR$/js/.jshintrc" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/js/app.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/js/models/CategoryEnum.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/js/models/LocalStorageHandler.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/js/models/TrafficInformation.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/js/webservices/SwedishRadioWebService.js" charset="UTF-8" />
   </component>

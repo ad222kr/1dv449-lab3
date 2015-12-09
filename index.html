@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/bootstrap.min.css" rel="stylesheet" media="all">
     <link href="css/bootstrap-theme.min.css" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <link rel="stylesheet" href="css/site.css" />
 
 </head>
 <body>
@@ -14,15 +16,17 @@
     </header>
     <main>
         <p class="test"></p>
+        <div id="map"></div>
 
     </main>
     <footer>
 
     </footer>
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="js/lib/bootstrap.min.js"></script>
     <script src="js/models/CategoryEnum.js"></script>
-    <script src="js/models/TrafficInformation.js"></script>
+    <script src="js/models/LocalStorageHandler.js"></script>
     <script src="js/webservices/SwedishRadioWebService.js"></script>
     <script src="js/app.js"></script>
 </body>

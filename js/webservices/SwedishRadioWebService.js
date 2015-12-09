@@ -1,44 +1,25 @@
-/**
- * @constructor
- */
-function SwedishRadioWebService() {
+var App = App || {};
+
+App.SwedishRadioWebService = function() {
     "use strict";
 
-    /**
-     * Members
-     */
     var URL = "http://api.sr.se/api/v2/traffic/messages";
+    var localStorageHandler = new App.LocalStorageHandler();
+    var storageName = "trafficInformation";
 
-    var requestParams = {
-        format: "json",
-        pagination: "false"
-    };
-
-    /**
-     * Public
-     */
     this.getTrafficData = function() {
         makeRequest();
     };
 
-    /**
-     * Private
-     */
-
     var makeRequest = function() {
-        var json = $.ajax({
-            type: "GET",
-            url: URL,
-            data: requestParams,
-            success: function (data) {
-                handleResponse(data);
-            }
 
-        });
+
+        console.log(localStorage.getItem("trafficInformation"));
+        console.log(localStorage.getItem("trafficInformation_time"));
+        console.log(Date.now() / 1000);
     };
 
     var handleResponse = function(data) {
-        document.write(data);
     };
 
 
