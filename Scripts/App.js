@@ -2,10 +2,10 @@
 
 var TrafficApp = TrafficApp || {};
 
-/**
- * Settings for the map
- * @type {{center: {x: number, y: number}, zoom: number, layers: {url: string, attribution: string}}}
- */
+TrafficApp.URL_TO_JSON = "trafficinfo.json";
+
+TrafficApp.markers = [];
+
 TrafficApp.MAP_SETTINGS = {
     center: {
         x: 63,
@@ -27,41 +27,50 @@ TrafficApp.PRIORITY = {
 };
 
 TrafficApp.CATEGORY = {
-    "0": "Vägtrafik",
-    "1": "Kollektivtrafik",
-    "2": "Planerad störning",
-    "3": "Övrigt"
+    ROAD: 0,
+    COLLECTIVE: 1,
+    PLANNED: 2,
+    OTHER: 3,
+    ALL: 4,
+
+    getDescription: function(value) {
+        "use strict";
+        switch (value) {
+            case TrafficApp.CATEGORY.ROAD:
+                return "Vägtrafik";
+            case TrafficApp.CATEGORY.COLLECTIVE:
+                return "Kollektivtrafik";
+            case TrafficApp.CATEGORY.PLANNED:
+                return "Planerad störning";
+            case TrafficApp.CATEGORY.OTHER:
+                return "Övrigt";
+        }
+    },
 };
-
-TrafficApp.URL_TO_JSON = "trafficinfo.json";
-
-TrafficApp.markers = [];
 
 TrafficApp.run = function() {
     "use strict";
     var map = TrafficApp.initMap();
-    var response;
+    var categories = document.querySelector("#categories");
 
-    
     TrafficApp.makeAjaxRequest(function() {
+        var messages = JSON.parse(this.responseText).messages;
 
-        response = JSON.parse(this.responseText);
-        TrafficApp.drawMarkers(response.messages, map);
-        var sho = document.querySelector("#categories");
-        sho.addEventListener("change", function(e) {
-            if (!e) { e = window.event; }
-            TrafficApp.drawMarkers(response.messages, map, sho.value);
+        TrafficApp.drawMarkers(messages, map, TrafficApp.CATEGORY.ALL);
 
+        categories.addEventListener("change", function() {
+            TrafficApp.drawMarkers(messages, map, parseInt(categories.value));
         });
     }, TrafficApp.URL_TO_JSON);
 };
+
 
 /**
  * @return a leaflet-map
  */
 TrafficApp.initMap = function() {
     "use strict";
-    var map = L.map('map', {
+    return L.map('map', {
         'center': [TrafficApp.MAP_SETTINGS.center.x, TrafficApp.MAP_SETTINGS.center.y],
         'zoom': TrafficApp.MAP_SETTINGS.zoom,
         'layers': [
@@ -69,12 +78,12 @@ TrafficApp.initMap = function() {
                 'attribution': TrafficApp.MAP_SETTINGS.layers.attribution
             })]
     });
-
-    return map;
 };
 
 /**
- * @param callback - callback function to execute when request is done
+ *
+ * @param callback - to execute on completion
+ * @param url
  */
 TrafficApp.makeAjaxRequest = function(callback, url) {
     "use strict";
@@ -95,8 +104,10 @@ TrafficApp.makeAjaxRequest = function(callback, url) {
 };
 
 /**
- * @param trafficInfo - object containing the trafficInformation from SR
- * @param map - a leaflet map object
+ *
+ * @param messages - messages about traffic information
+ * @param map - instance of the leaflet-map
+ * @param category - to filter on, OPTIONAL
  */
 TrafficApp.drawMarkers = function(messages, map, category) {
     "use strict";
@@ -108,30 +119,51 @@ TrafficApp.drawMarkers = function(messages, map, category) {
 
         TrafficApp.markers = [];
     }
-
-    if (category >= 0 ) {
-        messages = TrafficApp.filterTrafficInformation(messages, parseInt(category));
+    if (category !== TrafficApp.CATEGORY.ALL) {
+        messages = TrafficApp.filterTrafficInformation(messages, category);
     }
 
     messages.forEach(function(element) {
+        var parsedDate = TrafficApp.parseDate(element.createddate);
+        var categoryDescription = TrafficApp.CATEGORY.getDescription(element.category);
         var popupText = "<div>Titel: " + element.title + "</div>" +
                         "<div>Beskrivning: " + element.description + "</div>" +
-                        "<div>Kategori: " + TrafficApp.CATEGORY[element.category] + "</div>" +
+                        "<div>Kategori: " + categoryDescription + "</div>" +
                         "<div>Underkategori: " + element.subcategory + "</div>" +
-                        "<div>Datum: " + element.createddate + "</div>"; // parse date here todo
+                        "<div>Datum: " + parsedDate + "</div>"; // parse date here todo
 
-        TrafficApp.markers.push(L.marker([element.latitude, element.longitude]).addTo(map)
-            .bindPopup(popupText));
+        var marker = L.marker([element.latitude, element.longitude])
+          .addTo(map)
+          .bindPopup(popupText);
+
+        TrafficApp.markers.push(marker);
     });
 };
 
 TrafficApp.filterTrafficInformation = function(messages, filterCategory) {
     "use strict";
-    var ret = messages.filter(function(element) {
-       return element.category === filterCategory;
+    return messages.filter(function (element) {
+        return element.category === filterCategory;
     });
 
-    return ret;
-}
+};
+
+TrafficApp.parseDate = function(dateString) {
+    "use strict";
+    var millis = parseInt(dateString.substring(6, dateString.length - 7));
+    var monthNames = [
+        "Januari", "Februari", "Mars", "April",
+        "Maj", "Juni", "Juli", "Augusti",
+        "September", "Oktober", "November", "December"
+    ]
+    var date = new Date(millis);
+    var day = date.getDate();
+    var month = date.getMonth();
+    var year = date.getFullYear();
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+
+    return day + " " + monthNames[month] + " " + year + " " + hour + ":" + minute;
+};
 
 window.onload = TrafficApp.run;

@@ -52,7 +52,7 @@ class HTMLView {
                             <label for="categories" class="col-sm-4 control-label">Välj kategori</label>
                             <div class="col-sm-8">
                                 <select id = "categories" class="dropdown form-control">
-                                   <option selected="selected" >Alla</option>
+                                   <option selected="selected" value="4">Alla</option>
                                    <option value = "0">Vägtrafik</option>
                                    <option value = "1">Kollektivtrafik</option>
                                    <option value = "2">Planerad störning</option>
