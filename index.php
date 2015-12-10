@@ -2,6 +2,6 @@
 
 require_once("Models/WebServices/SwedishRadioWebService.php");
 
-$srws = new \models\SwedishRadioWebService();
+$srws = new SwedishRadioWebService();
 
 $srws->getTrafficData();

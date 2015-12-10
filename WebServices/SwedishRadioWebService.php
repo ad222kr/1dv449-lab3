@@ -1,10 +1,7 @@
 <?php
 
-namespace models;
-
 class SwedishRadioWebService {
 
-    private static $trafficInformationRequestUrl = "http://api.sr.se/api/v2/traffic/messages?format=json&pagination=false";
     private static $cachedFileHandle = "trafficinfo.json";
     private static $cacheTime = 10 * 60; // 10 mins
 
@@ -31,7 +28,7 @@ class SwedishRadioWebService {
 
     private function makeApiRequest() {
         $options = array(
-            CURLOPT_URL => self::$trafficInformationRequestUrl,
+            CURLOPT_URL => "http://api.sr.se/api/v2/traffic/messages?format=json&pagination=false",
             CURLOPT_RETURNTRANSFER => TRUE
         );
         $ch = curl_init();
