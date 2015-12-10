@@ -111,13 +111,20 @@ TrafficApp.makeAjaxRequest = function(callback, url) {
  */
 TrafficApp.drawMarkers = function(messages, map, category) {
     "use strict";
+    var information = document.querySelector(".information");
+    console.log(information);
+
     // clear markers if any exists
     if (TrafficApp.markers.length > 0) {
         TrafficApp.markers.forEach(function(element) {
             map.removeLayer(element);
         });
-
         TrafficApp.markers = [];
+
+        // clear text aswell
+        while(information.firstChild) {
+            information.removeChild(information.firstChild);
+        }
     }
     if (category !== TrafficApp.CATEGORY.ALL) {
         messages = TrafficApp.filterTrafficInformation(messages, category);
@@ -126,19 +133,30 @@ TrafficApp.drawMarkers = function(messages, map, category) {
     messages.forEach(function(element) {
         var parsedDate = TrafficApp.parseDate(element.createddate);
         var categoryDescription = TrafficApp.CATEGORY.getDescription(element.category);
-        var popupText = "<div>Titel: " + element.title + "</div>" +
-                        "<div>Beskrivning: " + element.description + "</div>" +
-                        "<div>Kategori: " + categoryDescription + "</div>" +
-                        "<div>Underkategori: " + element.subcategory + "</div>" +
-                        "<div>Datum: " + parsedDate + "</div>"; // parse date here todo
+        var popupText =
+            "<h4>" + element.title + "</h4>" +
+            "<div><b>Beskrivning: </b>" + element.description + "</div>" +
+            "<div><b>Kategori: </b>" + categoryDescription + "</div>" +
+            "<div><b>Underkategori: </b>" + element.subcategory + "</div>" +
+            "<div><b>Datum: </b>" + parsedDate + "</div>";
 
         var marker = L.marker([element.latitude, element.longitude])
           .addTo(map)
           .bindPopup(popupText);
 
+        var info = document.createElement("a");
+        info.href = "#";
+        info.innerHTML = popupText;
+        information.appendChild(info);
+
+        info.addEventListener("click", function() {
+            marker.openPopup();
+        });
+
         TrafficApp.markers.push(marker);
     });
 };
+
 
 TrafficApp.filterTrafficInformation = function(messages, filterCategory) {
     "use strict";

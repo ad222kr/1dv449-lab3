@@ -30,11 +30,11 @@ class HTMLView {
       <nav class="navbar navbar-default">
         <div class="container-fluid">
           <div class="navbar-header">
-            <a class="navbar-brand" href="#">Project name</a>
+            <a class="navbar-brand" href="#">Trafikinformation från Sveriges Radio</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <div class="nav navbar-nav navbar-right">
-              <p class="navbar-brand">Traffic information</p>
+              <p class="navbar-brand">1dv449</p>
             </div>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
@@ -59,6 +59,8 @@ class HTMLView {
                                    <option value = "3">Övrigt</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="information">
                         </div>
                     </div>
                  </div>
