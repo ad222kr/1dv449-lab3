@@ -17,8 +17,8 @@ class HTMLView {
         <title>Webteknik 2 - Lab 3</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="lib/bootstrap/Css/bootstrap.css" />
-        <link rel="stylesheet" href="lib/bootstrap/Css/bootstrap-theme.css" />
+        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.css" />
         <link rel="stylesheet" href="lib/leaflet/leaflet.css" />
         <link rel="stylesheet" href="Css/site.css" />
     </head>
