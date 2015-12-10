@@ -147,10 +147,15 @@ TrafficApp.drawMarkers = function(messages, map, category) {
           .addTo(map)
           .bindPopup(popupText);
 
+        var buttonDiv = document.createElement("div");
         var titleLink = document.createElement("a");
+        buttonDiv.appendChild(titleLink);
         titleLink.href = "#";
+        titleLink.classList.add("btn");
+        titleLink.classList.add("btn-default");
         titleLink.innerHTML = "<h4>" + element.title + "</h4>";
-        information.appendChild(titleLink);
+
+        information.appendChild(buttonDiv);
         titleLink.addEventListener("click", function() {
             marker.openPopup();
             map.setView([element.latitude, element.longitude], 9);
