@@ -13,8 +13,10 @@ TrafficApp.MAP_SETTINGS = {
     },
     zoom: 5,
     layers: {
-        url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        attribution: 'Map data &copy; OpenStreetMap contributors'
+        url: 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        accessToken: 'pk.eyJ1IjoiYmVuZ3Rib3hhcmUiLCJhIjoiY2lpMHZjZ2U0MDU0NHQzbTFvcWdjdHoyaCJ9._0Ukq83Y0d8qzjb1sM7gmg'
+
     }
 };
 
@@ -70,14 +72,15 @@ TrafficApp.run = function() {
  */
 TrafficApp.initMap = function() {
     "use strict";
-    return L.map('map', {
-        'center': [TrafficApp.MAP_SETTINGS.center.x, TrafficApp.MAP_SETTINGS.center.y],
-        'zoom': TrafficApp.MAP_SETTINGS.zoom,
-        'layers': [
-            L.tileLayer(TrafficApp.MAP_SETTINGS.layers.url, {
-                'attribution': TrafficApp.MAP_SETTINGS.layers.attribution
-            })]
-    });
+
+    var map = L.map("map").setView([TrafficApp.MAP_SETTINGS.center.x, TrafficApp.MAP_SETTINGS.center.y], TrafficApp.MAP_SETTINGS.zoom)
+    L.tileLayer('https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        maxZoom: 16,
+        accessToken: 'pk.eyJ1IjoiYmVuZ3Rib3hhcmUiLCJhIjoiY2lpMHZjZ2U0MDU0NHQzbTFvcWdjdHoyaCJ9._0Ukq83Y0d8qzjb1sM7gmg'
+    }).addTo(map);
+
+    return map;
 };
 
 /**
@@ -144,14 +147,16 @@ TrafficApp.drawMarkers = function(messages, map, category) {
           .addTo(map)
           .bindPopup(popupText);
 
-        var info = document.createElement("a");
-        info.href = "#";
-        info.innerHTML = popupText;
-        information.appendChild(info);
-
-        info.addEventListener("click", function() {
+        var titleLink = document.createElement("a");
+        titleLink.href = "#";
+        titleLink.innerHTML = "<h4>" + element.title + "</h4>";
+        information.appendChild(titleLink);
+        titleLink.addEventListener("click", function() {
             marker.openPopup();
+            map.setView([element.latitude, element.longitude], 10);
         });
+
+
 
         TrafficApp.markers.push(marker);
     });
