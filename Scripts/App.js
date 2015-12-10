@@ -19,31 +19,40 @@ TrafficApp.MAP_SETTINGS = {
 };
 
 TrafficApp.PRIORITY = {
-    1: "Mycket Allvarlig Händelse",
-    2: "Stor händelse",
-    3: "Störning",
-    4: "Information",
-    5: "Mindre störning"
+    "1": "Mycket Allvarlig Händelse",
+    "2": "Stor händelse",
+    "3": "Störning",
+    "4": "Information",
+    "5": "Mindre störning"
 };
 
 TrafficApp.CATEGORY = {
-    0: "Vägtrafik",
-    1: "Kollektivtrafik",
-    2: "Planerad störning",
-    3: "Övrigt"
+    "0": "Vägtrafik",
+    "1": "Kollektivtrafik",
+    "2": "Planerad störning",
+    "3": "Övrigt"
 };
 
 TrafficApp.URL_TO_JSON = "trafficinfo.json";
 
+TrafficApp.markers = [];
+
 TrafficApp.run = function() {
     "use strict";
     var map = TrafficApp.initMap();
+    var response;
 
-    console.log(TrafficApp.CATEGORY["0"]);
     
     TrafficApp.makeAjaxRequest(function() {
-        var response = JSON.parse(this.responseText);
+
+        response = JSON.parse(this.responseText);
         TrafficApp.drawMarkers(response.messages, map);
+        var sho = document.querySelector("#categories");
+        sho.addEventListener("change", function(e) {
+            if (!e) { e = window.event; }
+            TrafficApp.drawMarkers(response.messages, map, sho.value);
+
+        });
     }, TrafficApp.URL_TO_JSON);
 };
 
@@ -91,10 +100,19 @@ TrafficApp.makeAjaxRequest = function(callback, url) {
  */
 TrafficApp.drawMarkers = function(messages, map, category) {
     "use strict";
+    // clear markers if any exists
+    if (TrafficApp.markers.length > 0) {
+        TrafficApp.markers.forEach(function(element) {
+            map.removeLayer(element);
+        });
 
-    if (category && typeof category === "number") {
-        messages = TrafficApp.filterTrafficInformation(messages, category);
+        TrafficApp.markers = [];
     }
+
+    if (category >= 0 ) {
+        messages = TrafficApp.filterTrafficInformation(messages, parseInt(category));
+    }
+
     messages.forEach(function(element) {
         var popupText = "<div>Titel: " + element.title + "</div>" +
                         "<div>Beskrivning: " + element.description + "</div>" +
@@ -102,14 +120,13 @@ TrafficApp.drawMarkers = function(messages, map, category) {
                         "<div>Underkategori: " + element.subcategory + "</div>" +
                         "<div>Datum: " + element.createddate + "</div>"; // parse date here todo
 
-        L.marker([element.latitude, element.longitude]).addTo(map)
-            .bindPopup(popupText);
+        TrafficApp.markers.push(L.marker([element.latitude, element.longitude]).addTo(map)
+            .bindPopup(popupText));
     });
 };
 
 TrafficApp.filterTrafficInformation = function(messages, filterCategory) {
     "use strict";
-    console.log(messages);
     var ret = messages.filter(function(element) {
        return element.category === filterCategory;
     });
@@ -117,10 +134,4 @@ TrafficApp.filterTrafficInformation = function(messages, filterCategory) {
     return ret;
 }
 
-
-
 window.onload = TrafficApp.run;
-
-
-
-

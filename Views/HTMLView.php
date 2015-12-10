@@ -25,15 +25,42 @@ class HTMLView {
 
     <body>
         <header>
-
-        </header>
+            <div class="container">
+                <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">Project name</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <div class="nav navbar-nav navbar-right">
+              <p class="navbar-brand">Traffic information</p>
+            </div>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+             </div>
+         </header>
 
         <div class="map"></div>
         <div class="container">
             <div class="row">
                  <div class="col-md-8 map-area"><div id="map"></div></div>
                  <div class="col-md-4 info-area">
-
+                     <div class="form-horizontal">
+                         <div class="form-group">
+                            <label for="categories" class="col-sm-4 control-label">Välj kategori</label>
+                            <div class="col-sm-8">
+                                <select id = "categories" class="dropdown form-control">
+                                   <option selected="selected" >Alla</option>
+                                   <option value = "0">Vägtrafik</option>
+                                   <option value = "1">Kollektivtrafik</option>
+                                   <option value = "2">Planerad störning</option>
+                                   <option value = "3">Övrigt</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                  </div>
             </div>
 
