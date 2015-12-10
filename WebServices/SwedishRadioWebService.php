@@ -9,21 +9,19 @@ class SwedishRadioWebService {
         if (!file_exists(self::$cachedFileHandle)) {
             $rawJson = $this->makeApiRequest();
             file_put_contents(self::$cachedFileHandle, $rawJson);
-            echo "file did not exist";
             return $rawJson;
         }
 
-        if ($this->cacheIsFresh()) {
-            echo "cache is fresh, return cache";
+        if ($this->cacheIsFresh())
             return file_get_contents(self::$cachedFileHandle);
-        } else {
-            echo "cache was not fresh, get new cache";
+        else
             return $this->makeApiRequest();
-        }
+
     }
 
     private function cacheIsFresh() {
-        return file_exists(self::$cachedFileHandle) && (filemtime(self::$cachedFileHandle) > time() - self::$cacheTime);
+        return file_exists(self::$cachedFileHandle) &&
+              (filemtime(self::$cachedFileHandle) > time() - self::$cacheTime);
     }
 
     private function makeApiRequest() {
