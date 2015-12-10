@@ -2,6 +2,10 @@
 
 var TrafficApp = TrafficApp || {};
 
+/**
+ * Settings for the map
+ * @type {{center: {x: number, y: number}, zoom: number, layers: {url: string, attribution: string}}}
+ */
 TrafficApp.mapSettings = {
     center: {
         x: 63,
@@ -14,11 +18,12 @@ TrafficApp.mapSettings = {
     }
 };
 
-TrafficApp.urlToJson = "http://api.sr.se/api/v2/traffic/messages?format=json&pagination=false";
+TrafficApp.urlToJson = "trafficinfo.json";
 
 TrafficApp.run = function() {
     "use strict";
     var map = TrafficApp.initMap();
+
     TrafficApp.makeAjaxRequest(function() {
         var response = JSON.parse(this.responseText);
         TrafficApp.drawMarkers(response, map);
@@ -26,7 +31,7 @@ TrafficApp.run = function() {
 };
 
 /**
- * Initates the map and returns it
+ * @return a leaflet-map
  */
 TrafficApp.initMap = function() {
     "use strict";
@@ -36,19 +41,18 @@ TrafficApp.initMap = function() {
         'layers': [
             L.tileLayer(TrafficApp.mapSettings.layers.url, {
                 'attribution': TrafficApp.mapSettings.layers.attribution
-            })
-        ]
-
+            })]
     });
 
     return map;
 };
 
+/**
+ * @param callback - callback function to execute when request is done
+ */
 TrafficApp.makeAjaxRequest = function(callback) {
     "use strict";
     var xhr = new XMLHttpRequest();
-    var data;
-
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
             if (xhr.status === 200 && typeof callback === "function") {
@@ -64,6 +68,10 @@ TrafficApp.makeAjaxRequest = function(callback) {
     xhr.send(null);
 };
 
+/**
+ * @param trafficInfo - object containing the trafficInformation from SR
+ * @param map - a leaflet map object
+ */
 TrafficApp.drawMarkers = function(trafficInfo, map) {
     "use strict";
 
@@ -76,35 +84,6 @@ TrafficApp.drawMarkers = function(trafficInfo, map) {
 }
 
 
-
-/*var App = {
-    map: null,
-
-    run: function() {
-        "use strict";
-
-
-        App.map =
-
-
-
-
-
-        App.getTrafficInformation();
-
-
-    },
-
-    getTrafficInformation: function() {
-
-    },
-
-    foo: function() {
-        console.log("bar");
-    }
-};
-
-*/
 
 window.onload = TrafficApp.run;
 
