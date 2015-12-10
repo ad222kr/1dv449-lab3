@@ -32,7 +32,9 @@ class HTMLView {
         <div class="container">
             <div class="row">
                  <div class="col-md-8 map-area"><div id="map"></div></div>
-                 <div class="col-md-4 info-area">Some info bout traffic here </div>
+                 <div class="col-md-4 info-area">
+
+                 </div>
             </div>
 
         </div>

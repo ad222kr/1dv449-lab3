@@ -6,7 +6,7 @@ var TrafficApp = TrafficApp || {};
  * Settings for the map
  * @type {{center: {x: number, y: number}, zoom: number, layers: {url: string, attribution: string}}}
  */
-TrafficApp.mapSettings = {
+TrafficApp.MAP_SETTINGS = {
     center: {
         x: 63,
         y: 17
@@ -18,16 +18,33 @@ TrafficApp.mapSettings = {
     }
 };
 
-TrafficApp.urlToJson = "trafficinfo.json";
+TrafficApp.PRIORITY = {
+    1: "Mycket Allvarlig Händelse",
+    2: "Stor händelse",
+    3: "Störning",
+    4: "Information",
+    5: "Mindre störning"
+};
+
+TrafficApp.CATEGORY = {
+    0: "Vägtrafik",
+    1: "Kollektivtrafik",
+    2: "Planerad störning",
+    3: "Övrigt"
+};
+
+TrafficApp.URL_TO_JSON = "trafficinfo.json";
 
 TrafficApp.run = function() {
     "use strict";
     var map = TrafficApp.initMap();
 
+    console.log(TrafficApp.CATEGORY["0"]);
+    
     TrafficApp.makeAjaxRequest(function() {
         var response = JSON.parse(this.responseText);
-        TrafficApp.drawMarkers(response, map);
-    });
+        TrafficApp.drawMarkers(response.messages, map);
+    }, TrafficApp.URL_TO_JSON);
 };
 
 /**
@@ -36,11 +53,11 @@ TrafficApp.run = function() {
 TrafficApp.initMap = function() {
     "use strict";
     var map = L.map('map', {
-        'center': [TrafficApp.mapSettings.center.x, TrafficApp.mapSettings.center.y],
-        'zoom': TrafficApp.mapSettings.zoom,
+        'center': [TrafficApp.MAP_SETTINGS.center.x, TrafficApp.MAP_SETTINGS.center.y],
+        'zoom': TrafficApp.MAP_SETTINGS.zoom,
         'layers': [
-            L.tileLayer(TrafficApp.mapSettings.layers.url, {
-                'attribution': TrafficApp.mapSettings.layers.attribution
+            L.tileLayer(TrafficApp.MAP_SETTINGS.layers.url, {
+                'attribution': TrafficApp.MAP_SETTINGS.layers.attribution
             })]
     });
 
@@ -50,7 +67,7 @@ TrafficApp.initMap = function() {
 /**
  * @param callback - callback function to execute when request is done
  */
-TrafficApp.makeAjaxRequest = function(callback) {
+TrafficApp.makeAjaxRequest = function(callback, url) {
     "use strict";
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
@@ -59,12 +76,12 @@ TrafficApp.makeAjaxRequest = function(callback) {
                 callback.apply(xhr);
 
             } else {
-                console.log("l�sfel, status: " + xhr.status);
+                console.log("läsfel, status: " + xhr.status);
             }
         }
     };
 
-    xhr.open("GET", TrafficApp.urlToJson, true);
+    xhr.open("GET", url, true);
     xhr.send(null);
 };
 
@@ -72,15 +89,32 @@ TrafficApp.makeAjaxRequest = function(callback) {
  * @param trafficInfo - object containing the trafficInformation from SR
  * @param map - a leaflet map object
  */
-TrafficApp.drawMarkers = function(trafficInfo, map) {
+TrafficApp.drawMarkers = function(messages, map, category) {
     "use strict";
 
-    console.log(map);
-    trafficInfo.messages.forEach(function(element, index) {
-        console.log(element.latitude);
+    if (category && typeof category === "number") {
+        messages = TrafficApp.filterTrafficInformation(messages, category);
+    }
+    messages.forEach(function(element) {
+        var popupText = "<div>Titel: " + element.title + "</div>" +
+                        "<div>Beskrivning: " + element.description + "</div>" +
+                        "<div>Kategori: " + TrafficApp.CATEGORY[element.category] + "</div>" +
+                        "<div>Underkategori: " + element.subcategory + "</div>" +
+                        "<div>Datum: " + element.createddate + "</div>"; // parse date here todo
+
         L.marker([element.latitude, element.longitude]).addTo(map)
-          .bindPopup("some popupdata here :D");
+            .bindPopup(popupText);
     });
+};
+
+TrafficApp.filterTrafficInformation = function(messages, filterCategory) {
+    "use strict";
+    console.log(messages);
+    var ret = messages.filter(function(element) {
+       return element.category === filterCategory;
+    });
+
+    return ret;
 }
 
 
