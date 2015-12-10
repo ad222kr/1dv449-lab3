@@ -17,10 +17,10 @@ class HTMLView {
         <title>Webteknik 2 - Lab 3</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css" />
-        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.css" />
-        <link rel="stylesheet" href="lib/leaflet/leaflet.css" />
-        <link rel="stylesheet" href="css/site.css" />
+        <link rel="stylesheet" href="lib/bootstrap/Css/bootstrap.Css" />
+        <link rel="stylesheet" href="lib/bootstrap/Css/bootstrap-theme.Css" />
+        <link rel="stylesheet" href="lib/leaflet/leaflet.Css" />
+        <link rel="stylesheet" href="Css/site.Css" />
     </head>
 
     <body>
@@ -72,7 +72,7 @@ class HTMLView {
 
         </footer>
         <script src="lib/leaflet/leaflet.js"></script>
-        <script src="scripts/App.js"></script>
+        <script src="Scripts/App.js"></script>
     </body>
 </html>
                 ';
