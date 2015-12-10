@@ -1,2 +1,9 @@
 #map { height:800px;
     width: 650px; }
+
+
+.information {
+    height: 750px;
+
+    overflow: auto;
+}

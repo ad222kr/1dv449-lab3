@@ -44,8 +44,8 @@ class HTMLView {
         <div class="map"></div>
         <div class="container">
             <div class="row">
-                 <div class="col-md-8 map-area"><div id="map"></div></div>
-                 <div class="col-md-4 info-area">
+                 <div class="col-md-7 map-area"><div id="map"></div></div>
+                 <div class="col-md-5 info-area">
                      <div class="form-horizontal">
                          <div class="form-group">
                             <label for="categories" class="col-sm-4 control-label">Välj kategori</label>

@@ -153,7 +153,7 @@ TrafficApp.drawMarkers = function(messages, map, category) {
         information.appendChild(titleLink);
         titleLink.addEventListener("click", function() {
             marker.openPopup();
-            map.setView([element.latitude, element.longitude], 10);
+            map.setView([element.latitude, element.longitude], 9);
         });
 
 
