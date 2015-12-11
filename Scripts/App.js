@@ -124,7 +124,6 @@ TrafficApp.makeAjaxRequest = function(callback, url) {
 TrafficApp.drawMarkers = function(messages, map, category) {
   "use strict";
   var information = document.querySelector(".information");
-  console.log(information);
 
   // clear markers if any exists
   if (TrafficApp.markers.length > 0) {
