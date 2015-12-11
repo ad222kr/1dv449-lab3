@@ -1,9 +1,20 @@
-#map { height:800px;
-    width: 650px; }
+.cont {
+    padding: 51px 15px;
+}
+
+
+
+#map { height:850px;
+    width: 750px; }
 
 
 .information {
-    height: 750px;
+    height: 800px;
 
     overflow: auto;
+}
+
+.btn{
+    white-space:normal !important;
+
 }

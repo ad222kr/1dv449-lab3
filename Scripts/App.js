@@ -168,6 +168,8 @@ TrafficApp.drawMarkers = function(messages, map, category) {
     titleLink.href = "#";
     titleLink.classList.add("btn");
     titleLink.classList.add("btn-default");
+    titleLink.classList.add("btn-block");
+    titleLink.classList.add("btn-xs");
     titleLink.innerHTML = "<h4>" + element.title + "</h4>";
 
     information.appendChild(buttonDiv);
@@ -176,11 +178,10 @@ TrafficApp.drawMarkers = function(messages, map, category) {
       map.setView([element.latitude, element.longitude], 12);
     });
 
-
-
     TrafficApp.markers.push(marker);
   });
 };
+
 
 
 TrafficApp.filterTrafficInformation = function(messages, filterCategory) {
@@ -212,7 +213,7 @@ TrafficApp.formatDate = function(date) {
   var hour = date.getHours();
   var minute = date.getMinutes();
 
-  return day + " " + monthNames[month] + " " + year + " " + hour + ":" + minute;
+  return day + " " + monthNames[month] + " " + year + " " + hour + ":" + (minute < 10 ? "0" + minute : minute);
 };
 
 window.onload = TrafficApp.run;
