@@ -65,13 +65,7 @@ TrafficApp.run = function() {
     });
 
     messages.sort(function(d1, d2) {
-      if (d1.createddate > d2.createddate){
-        return -1;
-      } else if (d1.createddate < d2.createddate) {
-        return 1;
-      } else {
-        return 0;
-      }
+      return d2.createddate - d1.createddate;
     });
 
     TrafficApp.drawMarkers(messages, map, TrafficApp.CATEGORY.ALL);

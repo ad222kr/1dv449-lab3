@@ -29,7 +29,7 @@ class HTMLView {
 
           <a class="navbar-brand" href="#">Trafikinformation</a>
         </div>
-        
+
       </div>
     </nav>
 
