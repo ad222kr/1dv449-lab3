@@ -3,7 +3,7 @@
 class SwedishRadioWebService {
 
     private static $cachedFileHandle = "trafficinfo.json";
-    private static $cacheTime = 10 * 60; // 10 mins
+    private static $cacheTime = 600; // 10 mins
 
     public function getTrafficData() {
         if (!file_exists(self::$cachedFileHandle)) {

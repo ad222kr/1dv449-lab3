@@ -77,8 +77,6 @@ TrafficApp.run = function() {
 };
 
 
-
-
 /**
  * @return a leaflet-map
  */
