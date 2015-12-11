@@ -12,8 +12,9 @@ TrafficApp.MAP_SETTINGS = {
     y: 17
   },
   zoom: 5,
+  maxZoom: 15,
   layers: {
-    url: "https://api.tiles.mapbox.com/v4/mapbox.comic/{z}/{x}/{y}.png?access_token={accessToken}",
+    url: "https://api.tiles.mapbox.com/v4/mapbox.emerald/{z}/{x}/{y}.png?access_token={accessToken}",
     attribution: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"http://mapbox.com\">Mapbox</a>",
     accessToken: "pk.eyJ1IjoiYmVuZ3Rib3hhcmUiLCJhIjoiY2lpMHZjZ2U0MDU0NHQzbTFvcWdjdHoyaCJ9._0Ukq83Y0d8qzjb1sM7gmg"
 
@@ -93,7 +94,7 @@ TrafficApp.initMap = function() {
   var map = L.map("map").setView([TrafficApp.MAP_SETTINGS.center.x, TrafficApp.MAP_SETTINGS.center.y], TrafficApp.MAP_SETTINGS.zoom)
   L.tileLayer(TrafficApp.MAP_SETTINGS.layers.url, {
     attribution: TrafficApp.MAP_SETTINGS.layers.attribution,
-    maxZoom: TrafficApp.MAP_SETTINGS.zoom,
+    maxZoom: TrafficApp.MAP_SETTINGS.maxZoom,
     accessToken: TrafficApp.MAP_SETTINGS.layers.accessToken
   }).addTo(map);
 
@@ -172,7 +173,7 @@ TrafficApp.drawMarkers = function(messages, map, category) {
     information.appendChild(buttonDiv);
     titleLink.addEventListener("click", function() {
       marker.openPopup();
-      map.setView([element.latitude, element.longitude], 9);
+      map.setView([element.latitude, element.longitude], 12);
     });
 
 
