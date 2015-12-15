@@ -14,3 +14,11 @@ sedan hämtas färskt data igen. 10 minuter känns som en rimlig tid för trafik
 ### Vad finns det för säkerhetsrisker och stabilitet i din applikation?
 Självklart finns det en risk när man gör anorp mot ett API. Skulle SR's API bli kompromissat med skadlig kod skulle även min applikation
 drabbas.
+
+### Hur har du tänkt kring säkerhet i din applikation?
+Då applikationen inte använder några formulär så finns det ingen risk för SQL-injections, XSS-attacker eller CSRF-attacker.
+
+
+### Hur har du tänkt kring optimering i din applikation?
+Javascript-filer längst ner i body-taggen. CSS länkas in i head-taggen. Jag har använt den minifierade versionen av bootstrap för 
+att få mindre storlek på requests. Jag borde även ha miniferat mitt egna script.
